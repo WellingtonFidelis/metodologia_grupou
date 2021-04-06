@@ -20,6 +20,7 @@ grupos = {}
 for (let i = 0; i < quantidade_grupos; i++) {
   grupos[`grupo_${i + 1}`] = []
 }
+
 let grupo_corrente = 1;
 while (turma.alunos.length > 0) {
   // console.log(grupo_corrente, quantidade_grupos)
