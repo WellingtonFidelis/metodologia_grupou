@@ -27,18 +27,20 @@ for (let i = 0; i < turma.alunos.length; i++) {
 let alunosOrdered = turma.alunos.sort(function (alunoA, alunoB) {
   return alunoA.hardskills.grau_hardskills - alunoB.hardskills.grau_hardskills
 });
- 
+
 // agrupando os piores com melhores
 duplas = [];
 let metade_total_alunos = alunosOrdered.length / 2;
+let posicao_primeiro_aluno = 0;
 let posicao_ultimo_aluno = alunosOrdered.length - 1;
 let isCurrent = true;
 
-for (let i = 0; i < metade_total_alunos; i ++){
-  
+for (let i = 0; i < alunosOrdered.length; i ++){
+ 
   if(isCurrent){
 
-    duplas.push(alunosOrdered[i]);
+    duplas.push(alunosOrdered[posicao_primeiro_aluno]);
+    posicao_primeiro_aluno ++;
     isCurrent = false;
 
   } else {
@@ -61,17 +63,19 @@ let alunos_adicionados = 1;
 
 for (let i = 0; i < duplas.length; i++){
 
-  if( alunos_adicionados = alunos_por_grupo){
+  if( alunos_adicionados > alunos_por_grupo){
+
     grupo_corrente ++;
     alunos_adicionados = 1;
+ 
   }
 
-  //.push com erro
   grupos[`grupo_${grupo_corrente}`].push(duplas[i]);
   alunos_adicionados ++;
 }
 
-console.log(grupos);
+//imprimindo os grupos balanceados 
+console.log(grupos)
 
 function grauCurrentStudent() {
   return
