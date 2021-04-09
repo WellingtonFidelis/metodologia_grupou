@@ -1,30 +1,16 @@
-var argv = require('yargs/yargs')(process.argv.slice(2)).argv;
-// console.log(argv)
-const fs = require('fs');
+//node melhor_caso.js -i turmas/152.json -o grupos -q 4 -s 1
 
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+var argv = require('yargs/yargs')(process.argv.slice(2)).argv;
+const fs = require('fs');
+const { isContext } = require('vm');
 
 let rawdata = fs.readFileSync(argv.i);
 let turma = JSON.parse(rawdata);
+
 const pesoHardskills = turma.hardskills_atividade;
-//console.log(pesoHardskills);
-
 let total_alunos = turma.alunos.length;
-
-//console.log(turma.alunos[0]);
-
-let quantidade_grupos = total_alunos / argv.q;
-// console.log(total_alunos / argv.q)
-
-
-
-grupos = {}
-
-for (let i = 0; i < quantidade_grupos; i++) {
-  grupos[`grupo_${i + 1}`] = []
-}
+let alunos_por_grupo = argv.q;
+let quantidade_grupos = total_alunos / alunos_por_grupo;
 
 for (let i = 0; i < turma.alunos.length; i++) {
 
@@ -35,15 +21,57 @@ for (let i = 0; i < turma.alunos.length; i++) {
     + (aluno.hardskills.Firebase.nota * pesoHardskills.Firebase.peso);
 
   aluno.hardskills['grau_hardskills'] = grau;
-
 }
 
-// ordenando do menor para o maior o array a turma
+// ordenando do menor para o maior grau
 let alunosOrdered = turma.alunos.sort(function (alunoA, alunoB) {
   return alunoA.hardskills.grau_hardskills - alunoB.hardskills.grau_hardskills
 });
+ 
+// agrupando os piores com melhores
+duplas = [];
+let metade_total_alunos = alunosOrdered.length / 2;
+let posicao_ultimo_aluno = alunosOrdered.length - 1;
+let isCurrent = true;
 
-console.log(alunosOrdered);
+for (let i = 0; i < metade_total_alunos; i ++){
+  
+  if(isCurrent){
+
+    duplas.push(alunosOrdered[i]);
+    isCurrent = false;
+
+  } else {
+
+    duplas.push(alunosOrdered[posicao_ultimo_aluno]);
+    posicao_ultimo_aluno --;
+    isCurrent = true;
+
+  }  
+}
+
+grupos = {}
+
+for (let i = 0; i < quantidade_grupos; i++) {
+  grupos[`grupo_${i + 1}`] = []
+}
+
+let grupo_corrente = 1;
+let alunos_adicionados = 1;
+
+for (let i = 0; i < duplas.length; i++){
+
+  if( alunos_adicionados = alunos_por_grupo){
+    grupo_corrente ++;
+    alunos_adicionados = 1;
+  }
+
+  //.push com erro
+  grupos[`grupo_${grupo_corrente}`].push(duplas[i]);
+  alunos_adicionados ++;
+}
+
+console.log(grupos);
 
 function grauCurrentStudent() {
   return
