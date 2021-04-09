@@ -2,7 +2,6 @@
 
 var argv = require('yargs/yargs')(process.argv.slice(2)).argv;
 const fs = require('fs');
-const { isContext } = require('vm');
 
 let rawdata = fs.readFileSync(argv.i);
 let turma = JSON.parse(rawdata);
@@ -10,7 +9,7 @@ let turma = JSON.parse(rawdata);
 const pesoHardskills = turma.hardskills_atividade;
 let total_alunos = turma.alunos.length;
 let alunos_por_grupo = argv.q;
-let quantidade_grupos = total_alunos / alunos_por_grupo;
+let quantidade_grupos = Math.ceil(total_alunos / alunos_por_grupo);
 
 for (let i = 0; i < turma.alunos.length; i++) {
 
@@ -74,8 +73,18 @@ for (let i = 0; i < duplas.length; i++){
   alunos_adicionados ++;
 }
 
+let media = 0;
+for(let i = 1; i <= quantidade_grupos; i++){
+  for(let j = 0; j < grupos[`grupo_${i}`].length; j ++){
+    //console.log(grupos[`grupo_${i}`][j].hardskills.grau_hardskills)
+    media += grupos[`grupo_${i}`][j].hardskills.grau_hardskills;
+  }
+  console.log("media do grupo " + i)
+  console.log(media/grupos[`grupo_${i}`].length)
+}
+
 //imprimindo os grupos balanceados 
-console.log(grupos)
+//console.log(grupos)
 
 let filename = argv.i.split("/")[1].split(".json")[0]
 
