@@ -1,5 +1,5 @@
 module.exports = () => {
-  const quantidade_alunos = 40;
+  const quantidade_alunos = 8;
 
   const calcula_outliers = (percentual) => {
     return Math.round((quantidade_alunos * percentual) / 100);

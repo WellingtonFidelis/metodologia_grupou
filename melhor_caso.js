@@ -1,4 +1,4 @@
-//node melhor_caso.js -i turmas/152.json -o grupos -q 4 -s 1
+//node melhor_caso.js -i turmas/153.json -o grupos -q 4 -s 1
 
 var argv = require('yargs/yargs')(process.argv.slice(2)).argv;
 const fs = require('fs');
@@ -76,6 +76,18 @@ for (let i = 0; i < duplas.length; i++){
 
 //imprimindo os grupos balanceados 
 console.log(grupos)
+
+let filename = argv.i.split("/")[1].split(".json")[0]
+
+fs.writeFile(`${argv.o}/${filename}_${argv.s}.json`, JSON.stringify({
+  grupos,
+  hardskills_atividade: turma.hardskills_atividade
+
+}, null, 2), function (err) {
+  if (err) throw err;
+  console.log('complete');
+}
+);
 
 function grauCurrentStudent() {
   return

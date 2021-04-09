@@ -13,7 +13,7 @@ const etapas = {
   },
   etapa_04: {
     descricao: "Definir e validar metodologia",
-    comando: "",
+    comando: "node melhor_caso.js -i turmas/153.json -o grupos -q 4 -s 1",
     arquivo_gerado: "deve ser no mesmo local do arquivo da etapa 03"
   },
   etapa_05: {
